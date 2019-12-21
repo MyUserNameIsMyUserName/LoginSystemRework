@@ -6,7 +6,6 @@ class dbClass {
     protected $db_user = 'muzika_27nov';
     protected $db_pass = 'muzika_27nov';
     protected $db_host = 'localhost';
-    public $query;
 
     public function connect() {
         $this->connect_db = new mysqli( $this->db_host, $this->db_user, $this->db_pass, $this->db_name );

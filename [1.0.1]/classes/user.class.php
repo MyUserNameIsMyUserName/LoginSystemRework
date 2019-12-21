@@ -6,12 +6,15 @@
 		private $con;
 		private $username = NULL;
 		public $errorArray = array();
-		private $tableName = 'usersss';
+		private $tableName = 'usersssaaa';
 
 		public function __construct() {
 			$this->con = new dbClass();
 			$this->con->connect();
 			$this->errorArray = array();
+			if ($this->tableExists() !== 1){
+				$this->repairTable();
+			}
 		}
 
 		public function setUsername($username) {
@@ -45,7 +48,7 @@
 		}
 
 		public function getEmail() {
-			if ($this->tableExists() == 1){
+				$this->errorArray = array();
 				if (!empty($this->username)){
 					$query = $this->con->connect_db->query("SELECT email FROM $this->tableName WHERE username='$this->username'");
 					$row = $query->fetch_array();
@@ -59,19 +62,10 @@
 					array_push($this->errorArray, 'Missing Username:[$user->getEmail()]');
 					return json_encode($this->errorArray);
 				}
-			} else {
-				$this->repairTable();
-				try {
-					$this->getEmail();
-				} catch (exception $e) {
-					$this->errorArray = $e;
-					return json_encode($this->errorArray);
-				}
-			}
 		}
 
 		public function getFirstAndLastName() {
-			if ($this->tableExists() == 1){
+				$this->errorArray = array();
 				if (!empty($this->username)){
 					$query = $this->con->connect_db->query("SELECT concat(firstName, ' ', lastName) as 'name'  FROM $this->tableName WHERE username='$this->username'");
 					$row = $query->fetch_array();
@@ -85,19 +79,9 @@
 					array_push($this->errorArray, 'Missing Username:[$user->getFirstAndLastName()]');
 					return json_encode($this->errorArray);
 				}
-			} else {
-				$this->repairTable();
-				try {
-					$this->getFirstAndLastName();
-				} catch (exception $e) {
-					$this->errorArray = $e;
-					return json_encode($this->errorArray);
-				}
-			}
 		}
 
 		public function login($un, $pw) {
-			if ($this->tableExists() == 1){
 				$this->errorArray = array();
 				if ((!empty($un)) && (!empty($pw)) ){
 					$pw = md5($pw);
@@ -123,16 +107,10 @@
 					return json_encode($this->errorArray);
 					
 				}
-			} else {
-				$this->repairTable();
-				return json_encode($this->errorArray);
-			}
-
 			
 		}
 
 		public function register($un, $fn, $ln, $em, $em2, $pw, $pw2) {
-			if ($this->tableExists() == 1){
 				$this->errorArray = array();
 				$this->validateUsername($un);
 				$this->validateFirstName($fn);
@@ -147,10 +125,6 @@
 				else {
 					return json_encode($this->errorArray);
 				}
-			} else {
-				$this->repairTable();
-				return json_encode($this->errorArray);
-			}
 		}
 
 

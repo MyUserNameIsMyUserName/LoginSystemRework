@@ -28,12 +28,4 @@ class dbClass {
 		return true;
     }
 
-    public function queryFunc($query){
-        if (mysqli_connect_errno()){
-            $result = $this->connect_db->query($query);
-            return $result->fetch_array();
-        }
-        return true;
-    }
-
 }

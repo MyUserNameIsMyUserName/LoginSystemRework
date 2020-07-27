@@ -51,7 +51,13 @@ if($jwt){
                 "data" => $user
             ));
         } else {
+            // set response code
+            http_response_code(404);
 
+            // show user details
+            echo json_encode(array(
+                "message" => "Missing Account Settings."
+            ));
         }
     }
  

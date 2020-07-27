@@ -4,7 +4,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
- 
+		<link rel="icon" href="data:,">
         <title>Rest API Authentication Example</title>
  
         <!-- Bootstrap 4 CSS and custom CSS -->
@@ -42,18 +42,11 @@
  
 <!-- container -->
 <main role="main" class="starter-template">
- 
-    <div class="">
-        <div class="col">
- 
-            <!-- where prompt / messages will appear -->
-            <div id="response"></div>
- 
-            <!-- where main content will appear -->
-            <div id="content"><?php include('templates/static_pages/home_page/index.php'); ?></div>
-        </div>
-    </div>
- 
+	<!-- where prompt / messages will appear -->
+	<div id="response"></div>
+
+	<!-- where main content will appear -->
+	<div id="content"></div>
 </main>
 <!-- /container -->
  
@@ -66,6 +59,14 @@
 <script>
 // jQuery codes
 $(document).ready(function(){
+
+	open_static_page('templates/static_pages/home_page/index.php');
+	
+	var jwtTest = getCookie('jwt');
+	if (jwtTest != ""){
+		showLoggedInMenu();
+	}
+
     // show sign up / registration form
     $(document).on('click', '#sign_up', function(){
 		show_register_form();
@@ -216,29 +217,9 @@ $(document).ready(function(){
 
 	// show login page
 	function showLoginPage(){
-	 
 	    // remove jwt
 	    setCookie("jwt", "", 1);
-	 
-	    // login page html
-	    var html = `
-	        <h2>Login</h2>
-	        <form id='login_form'>
-	            <div class='form-group'>
-	                <label for='email'>Email address</label>
-	                <input type='email' class='form-control' id='email' name='email' placeholder='Enter email'>
-	            </div>
-	 
-	            <div class='form-group'>
-	                <label for='password'>Password</label>
-	                <input type='password' class='form-control' id='password' name='password' placeholder='Password'>
-	            </div>
-	 
-	            <button type='submit' class='btn btn-primary'>Login</button>
-	        </form>
-	        `;
-	 
-	    $('#content').html(html);
+		$("#content").load("templates/users/login.temp.html");
 	    clearResponse();
 	    showLoggedOutMenu();
 	}
@@ -682,35 +663,36 @@ function show_register_form(){
 	
 	var jwt = getCookie('jwt');
 	if (jwt == ""){
-	var html = `
-		<h2>Sign Up</h2>
-		<form id='sign_up_form'>
-			<div class="form-group">
-				<label for="firstname">Firstname</label>
-				<input type="text" class="form-control" name="firstname" id="firstname" required />
+		var html = `
+			<div class="container">
+			<h2>Sign Up</h2>
+			<form id='sign_up_form'>
+				<div class="form-group">
+					<label for="firstname">Firstname</label>
+					<input type="text" class="form-control" name="firstname" id="firstname" required />
+				</div>
+
+				<div class="form-group">
+					<label for="lastname">Lastname</label>
+					<input type="text" class="form-control" name="lastname" id="lastname" required />
+				</div>
+
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" name="email" id="email" required />
+				</div>
+
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" name="password" id="password" required />
+				</div>
+
+				<button type='submit' class='btn btn-primary'>Sign Up</button>
+			</form>
 			</div>
-
-			<div class="form-group">
-				<label for="lastname">Lastname</label>
-				<input type="text" class="form-control" name="lastname" id="lastname" required />
-			</div>
-
-			<div class="form-group">
-				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" id="email" required />
-			</div>
-
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input type="password" class="form-control" name="password" id="password" required />
-			</div>
-
-			<button type='submit' class='btn btn-primary'>Sign Up</button>
-		</form>
-		`;
-
-	clearResponse();
-	$('#content').html(html);
+			`;
+		clearResponse();
+		$('#content').html(html);
 	} else {
 		showUpdateAccountForm();
 	}

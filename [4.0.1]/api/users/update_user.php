@@ -46,6 +46,7 @@ if($jwt){
 		$user->email = $data->email;
 		$user->password = $data->password;
 		$user->username = $data->username;
+		$user->main_color = $data->main_color;
 		$user->id = $decoded->data->id;
 		 
 		// create the product
@@ -68,11 +69,13 @@ if($jwt){
 			// set response code
 			http_response_code(200);
 			 
+			$user->get_account_settins();
 			// response in json format
 			echo json_encode(
 			        array(
 			            "message" => "User was updated.",
-			            "jwt" => $jwt
+						"jwt" => $jwt,
+						"data" => $user
 			        )
 			    );
 		}

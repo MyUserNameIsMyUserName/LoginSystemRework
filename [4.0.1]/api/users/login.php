@@ -34,7 +34,9 @@ use \Firebase\JWT\JWT;
  
 // check if email exists and if password is correct
 if($email_exists && password_verify($data->password, $user->password)){
- 
+    
+    $user->get_account_settins();
+
     $token = array(
        "iss" => $iss,
        "aud" => $aud,
@@ -56,7 +58,8 @@ if($email_exists && password_verify($data->password, $user->password)){
     echo json_encode(
             array(
                 "message" => "Successful login.",
-                "jwt" => $jwt
+                "jwt" => $jwt,
+                "data" => $user
             )
         );
  

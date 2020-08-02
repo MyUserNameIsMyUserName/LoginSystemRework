@@ -12,6 +12,8 @@ class User{
     public $lastname;
     public $email;
     public $password;
+    public $username;
+    public $main_color;
  
     // constructor
     public function __construct($db){
@@ -119,7 +121,8 @@ class User{
                     username = :username,
                     firstname = :firstname,
                     lastname = :lastname,
-                    email = :email
+                    email = :email,
+                    main_color = :main_color
                     {$password_set}
                 WHERE id = :id";
      
@@ -137,6 +140,7 @@ class User{
         $stmt->bindParam(':firstname', $this->firstname);
         $stmt->bindParam(':lastname', $this->lastname);
         $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':main_color', $this->main_color);
      
         // hash the password before saving to database
         if(!empty($this->password)){
@@ -182,6 +186,7 @@ class User{
             $this->lastname     = $row['lastname'];
             $this->username     = $row['username'];
             $this->email        = $row['email'];
+            $this->main_color   = $row['main_color'];
             $this->created      = $row['created'];
      
             // return true because account setting exists in the database
